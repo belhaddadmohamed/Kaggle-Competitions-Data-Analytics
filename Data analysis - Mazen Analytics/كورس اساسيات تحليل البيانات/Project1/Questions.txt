@@ -1,0 +1,10 @@
+Economic Cycles:
+1- What are the years of Recession and expansion?
+2- Most months are getting a recession.
+
+Sales Performance During Economic Cycles:
+1- Which city gets sales during a recession and during expansion?
+2- What is the most popular vehicle type in terms of sales in the Recession and in the expansion?
+
+Impact of Features on Sales:
+1- What is the most significant feature that impacts sales?
