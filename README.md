@@ -1,1 +1,1 @@
-# Kaggle-Competitions-Data-Analytics-Data-Science-
+# Kaggle-Competitions-Data-Analytics
