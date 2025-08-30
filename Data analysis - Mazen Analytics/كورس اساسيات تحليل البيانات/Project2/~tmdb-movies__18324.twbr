@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
 
 <!-- build 20252.25.0514.2217                               -->
-<workbook original-version='18.1' source-build='2025.2.0 (20252.25.0514.2217)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+<workbook original-version='18.1' source-build='2025.2.0 (20252.25.0514.2217)' source-platform='win' version='18.1' xml:base='https://public.tableau.com' xmlns:user='http://www.tableausoftware.com/xml/user'>
   <document-format-change-manifest>
     <AnimationOnByDefault />
     <IntuitiveSorting />
@@ -12,9 +12,11 @@
     <ObjectModelTableType />
     <SchemaViewerObjectModel />
     <SheetIdentifierTracking />
+    <SortTagCleanup />
     <_.fcp.VConnDownstreamExtractsWithWarnings.true...VConnDownstreamExtractsWithWarnings />
     <WindowsPersistSimpleIdentifiers />
   </document-format-change-manifest>
+  <repository-location id='tmdb-movies_17564953732270' path='/workbooks' revision='1.4' />
   <preferences>
     <preference name='ui.encoding.shelf.height' value='24' />
     <preference name='ui.shelf.height' value='26' />
@@ -24,7 +26,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='tmdb-movies' name='textscan.09kgovo15gqn4f17cy4gg132dkm1'>
-            <connection class='textscan' directory='C:/Users/PC-MOH/Desktop/Projects/Data Science/Ds (Data Analysis)/Data analysis - Mazen Analytics/كورس اساسيات تحليل البيانات/Data' filename='tmdb-movies.csv' password='' server='' />
+            <connection class='textscan' directory='C:/Users/PC-MOH/Desktop/Projects/Data Science/Ds (Data Analysis)/Data analysis - Mazen Analytics/كورس اساسيات تحليل البيانات/Data' filename='tmdb-movies.csv' password='' server='' workgroup-auth-mode='as-is' />
           </named-connection>
         </named-connections>
         <relation connection='textscan.09kgovo15gqn4f17cy4gg132dkm1' name='tmdb-movies.csv' table='[tmdb-movies#csv]' type='table'>
@@ -41,7 +43,7 @@
             <column datatype='string' name='genres' ordinal='9' />
             <column datatype='integer' name='vote_count' ordinal='10' />
             <column datatype='real' name='vote_average' ordinal='11' />
-            <column datatype='integer' name='release_year' ordinal='12' />
+            <column datatype='date' date-parse-format='yyyy' name='release_year' ordinal='12' />
             <column datatype='real' name='budget_adj' ordinal='13' />
             <column datatype='real' name='revenue_adj' ordinal='14' />
           </columns>
@@ -224,14 +226,15 @@
           </metadata-record>
           <metadata-record class='column'>
             <remote-name>release_year</remote-name>
-            <remote-type>20</remote-type>
+            <remote-type>7</remote-type>
             <local-name>[release_year]</local-name>
             <parent-name>[tmdb-movies.csv]</parent-name>
             <remote-alias>release_year</remote-alias>
             <ordinal>12</ordinal>
-            <local-type>integer</local-type>
-            <aggregation>Sum</aggregation>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
             <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RUS' />
             <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
           </metadata-record>
           <metadata-record class='column'>
@@ -261,6 +264,9 @@
         </metadata-records>
       </connection>
       <aliases enabled='yes' />
+      <column caption='ROI' datatype='real' name='[Calculation_1289436916128559104]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='([revenue] - [budget]) / [budget]' />
+      </column>
       <column caption='Profit' datatype='real' datatype-customized='true' name='[Calculation_1675339108893261826]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='FLOAT([revenue] - [budget])' />
       </column>
@@ -274,16 +280,26 @@
       <column caption='Imdb Id' datatype='string' name='[imdb_id]' role='dimension' type='nominal' />
       <column caption='Original Title' datatype='string' name='[original_title]' role='dimension' type='nominal' />
       <column caption='Popularity' datatype='real' name='[popularity]' role='measure' type='quantitative' />
-      <column caption='Release Year' datatype='integer' name='[release_year]' role='dimension' type='quantitative' />
+      <column caption='Release Year' datatype='integer' datatype-customized='true' name='[release_year]' role='dimension' type='quantitative' />
       <column caption='Revenue' datatype='integer' name='[revenue]' role='measure' type='quantitative' />
       <column caption='Revenue Adj' datatype='real' name='[revenue_adj]' role='measure' type='quantitative' />
       <column caption='Runtime' datatype='integer' name='[runtime]' role='measure' type='quantitative' />
       <column caption='Vote Average' datatype='real' name='[vote_average]' role='measure' type='quantitative' />
       <column caption='Vote Count' datatype='integer' name='[vote_count]' role='measure' type='quantitative' />
       <column-instance column='[original_title]' derivation='Attribute' name='[attr:original_title:nk]' pivot='key' type='nominal' />
+      <column-instance column='[revenue]' derivation='Attribute' name='[attr:revenue:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[vote_average]' derivation='Attribute' name='[attr:vote_average:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[budget]' derivation='Avg' name='[avg:budget:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[revenue]' derivation='Avg' name='[avg:revenue:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[vote_average]' derivation='Avg' name='[avg:vote_average:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[genres]' derivation='Min' name='[min:genres:nk]' pivot='key' type='nominal' />
+      <column-instance column='[Forecast Indicator]' derivation='None' forecast-column-base='[Forecast Indicator]' forecast-column-type='forecast-indicator' name='[none:Forecast Indicator:nk]' pivot='key' type='nominal' />
       <column-instance column='[original_title]' derivation='None' name='[none:original_title:nk]' pivot='key' type='nominal' />
+      <column-instance column='[revenue]' derivation='None' name='[none:revenue:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[vote_average]' derivation='None' name='[none:vote_average:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[revenue]' derivation='Sum' name='[sum:revenue:qk]' pivot='key' type='quantitative' />
       <extract _.fcp.VConnDownstreamExtractsWithWarnings.true...user-specific='false' count='-1' enabled='true' object-id='' units='records'>
-        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='C:/Users/PC-MOH/AppData/Local/Temp/TableauTemp/#TableauTemp_0mbi71f004gi3e11s91h3121ykom.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='08/29/2025 01:00:28 AM' username='tableau_internal_user'>
+        <connection access_mode='readonly' author-locale='en_US' class='hyper' dbname='Data/TableauTemp/#TableauTemp_1ygeb4m1tovow4146xnul1nzlqoa.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='' username='tableau_internal_user'>
           <relation name='Extract' table='[Extract].[Extract]' type='table' />
           <metadata-records>
             <metadata-record class='column'>
@@ -298,7 +314,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>3854</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>imdb_id</remote-name>
@@ -313,7 +328,6 @@
               <approx-count>3854</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>popularity</remote-name>
@@ -327,7 +341,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>3854</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>budget</remote-name>
@@ -341,7 +354,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>312</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>revenue</remote-name>
@@ -355,7 +367,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>2957</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>original_title</remote-name>
@@ -370,7 +381,6 @@
               <approx-count>3521</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>cast</remote-name>
@@ -385,7 +395,6 @@
               <approx-count>3743</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>director</remote-name>
@@ -400,7 +409,6 @@
               <approx-count>1265</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>runtime</remote-name>
@@ -414,7 +422,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>120</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>genres</remote-name>
@@ -429,7 +436,6 @@
               <approx-count>18</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>vote_count</remote-name>
@@ -443,7 +449,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>955</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>vote_average</remote-name>
@@ -457,7 +462,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>54</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>release_year</remote-name>
@@ -471,7 +475,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>61</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>budget_adj</remote-name>
@@ -485,7 +488,6 @@
               <aggregation>Sum</aggregation>
               <approx-count>1514</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>revenue_adj</remote-name>
@@ -499,15 +501,14 @@
               <aggregation>Sum</aggregation>
               <approx-count>3743</approx-count>
               <contains-null>true</contains-null>
-              <object-id>[tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82]</object-id>
             </metadata-record>
           </metadata-records>
         </connection>
       </extract>
-      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-aliased-fields='true' show-structure='true' />
       <style>
         <style-rule element='mark'>
-          <encoding attr='color' field='[none:original_title:nk]' type='palette'>
+          <encoding attr='color' field='[attr:original_title:nk]' type='palette'>
             <map to='#499894'>
               <bucket>&quot;27 Dresses&quot;</bucket>
             </map>
@@ -11930,7 +11931,36 @@
               <bucket>&quot;Zombieland&quot;</bucket>
             </map>
           </encoding>
-          <encoding attr='color' field='[attr:original_title:nk]' type='palette'>
+          <encoding attr='color' field='[:Measure Names]' type='palette'>
+            <map to='#0e1da7'>
+              <bucket>&quot;[federated.14myreq10eit07132r5n10eci0vo].[attr:revenue:qk]&quot;</bucket>
+            </map>
+            <map to='#0e1da7'>
+              <bucket>&quot;[federated.14myreq10eit07132r5n10eci0vo].[min:genres:nk]&quot;</bucket>
+            </map>
+            <map to='#0e1da7'>
+              <bucket>&quot;[federated.14myreq10eit07132r5n10eci0vo].[none:revenue:qk]&quot;</bucket>
+            </map>
+            <map to='#0e1da7'>
+              <bucket>&quot;[federated.14myreq10eit07132r5n10eci0vo].[sum:revenue:qk]&quot;</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>&quot;[federated.14myreq10eit07132r5n10eci0vo].[avg:budget:qk]&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;[federated.14myreq10eit07132r5n10eci0vo].[avg:revenue:qk]&quot;</bucket>
+            </map>
+            <map to='#f7a500'>
+              <bucket>&quot;[federated.14myreq10eit07132r5n10eci0vo].[attr:vote_average:qk]&quot;</bucket>
+            </map>
+            <map to='#f7a500'>
+              <bucket>&quot;[federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk]&quot;</bucket>
+            </map>
+            <map to='#f7a500'>
+              <bucket>&quot;[federated.14myreq10eit07132r5n10eci0vo].[none:vote_average:qk]&quot;</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:original_title:nk]' type='palette'>
             <map to='#499894'>
               <bucket>&quot;27 Dresses&quot;</bucket>
             </map>
@@ -23358,6 +23388,14 @@
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;Algeria&quot;' />
       </semantic-values>
+      <default-sorts>
+        <manual-sort column='[none:Forecast Indicator:nk]' direction='ASC'>
+          <dictionary>
+            <bucket>&quot;Actual&quot;</bucket>
+            <bucket>&quot;Estimate&quot;</bucket>
+          </dictionary>
+        </manual-sort>
+      </default-sorts>
       <object-graph>
         <objects>
           <object caption='tmdb-movies.csv' id='tmdb-movies.csv_AA92BBB6E966481FAD1946DB32713B82'>
@@ -23376,7 +23414,7 @@
                   <column datatype='string' name='genres' ordinal='9' />
                   <column datatype='integer' name='vote_count' ordinal='10' />
                   <column datatype='real' name='vote_average' ordinal='11' />
-                  <column datatype='integer' name='release_year' ordinal='12' />
+                  <column datatype='date' date-parse-format='yyyy' name='release_year' ordinal='12' />
                   <column datatype='real' name='budget_adj' ordinal='13' />
                   <column datatype='real' name='revenue_adj' ordinal='14' />
                 </columns>
@@ -23391,7 +23429,235 @@
     </datasource>
   </datasources>
   <worksheets>
-    <worksheet name='Sheet 1'>
+    <worksheet name='Budget/Revenue Over Years'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontcolor='#000000' fontname='Benton Sans Book'>✅ 1. How has movie revenue and budget evolved over time?</run>
+            <run>Æ&#10;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='tmdb-movies' name='federated.14myreq10eit07132r5n10eci0vo' />
+          </datasources>
+          <datasource-dependencies datasource='federated.14myreq10eit07132r5n10eci0vo'>
+            <column-instance column='[budget]' derivation='Avg' name='[avg:budget:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[revenue]' derivation='Avg' name='[avg:revenue:qk]' pivot='key' type='quantitative' />
+            <column caption='Budget' datatype='integer' name='[budget]' role='measure' type='quantitative' />
+            <column-instance column='[release_year]' derivation='None' name='[none:release_year:qk]' pivot='key' type='quantitative' />
+            <column caption='Release Year' datatype='integer' datatype-customized='true' name='[release_year]' role='dimension' type='quantitative' />
+            <column caption='Revenue' datatype='integer' name='[revenue]' role='measure' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='quantitative' column='[federated.14myreq10eit07132r5n10eci0vo].[none:release_year:qk]' included-values='in-range'>
+            <min>29033</min>
+          </filter>
+          <slices>
+            <column>[federated.14myreq10eit07132r5n10eci0vo].[none:release_year:qk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.14myreq10eit07132r5n10eci0vo].[avg:budget:qk]' field-type='quantitative' fold='true' scope='rows' synchronized='true' type='space' />
+          </style-rule>
+          <style-rule element='table'>
+            <format attr='band-size' scope='cols' value='5' />
+          </style-rule>
+          <style-rule element='refline'>
+            <format attr='line-visibility' value='on' />
+            <format attr='line-pattern-only' value='dashed' />
+            <format attr='stroke-size' value='2' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane id='3' selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+            <encodings>
+              <color column='[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]' />
+            </encodings>
+            <trendline enable-confidence-bands='false' enable-instant-analytics='true' enabled='true' exclude-color='false' exclude-intercept='false' fit='linear' />
+          </pane>
+          <pane id='4' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.14myreq10eit07132r5n10eci0vo].[avg:budget:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+            <encodings>
+              <color column='[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]' />
+            </encodings>
+            <trendline enable-confidence-bands='false' enable-instant-analytics='true' enabled='true' exclude-color='false' exclude-intercept='false' fit='linear' />
+            <style>
+              <style-rule element='trendline'>
+                <format attr='stroke-color' value='#72b96667' />
+                <format attr='stroke-size' value='1' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='5' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.14myreq10eit07132r5n10eci0vo].[avg:revenue:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+            <encodings>
+              <color column='[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]' />
+            </encodings>
+            <trendline enable-confidence-bands='false' enable-instant-analytics='true' enabled='true' exclude-color='false' exclude-intercept='false' fit='linear' />
+            <style>
+              <style-rule element='trendline'>
+                <format attr='stroke-size' value='1' />
+                <format attr='line-visibility' value='on' />
+                <format attr='line-pattern-only' value='dashed' />
+                <format attr='stroke-color' value='#72b96632' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>([federated.14myreq10eit07132r5n10eci0vo].[avg:revenue:qk] + [federated.14myreq10eit07132r5n10eci0vo].[avg:budget:qk])</rows>
+        <cols>[federated.14myreq10eit07132r5n10eci0vo].[none:release_year:qk]</cols>
+      </table>
+      <simple-id uuid='{3F51FA3E-C6C5-41C7-B0C8-0A255AB3B9C6}' />
+    </worksheet>
+    <worksheet name='Genres/Revenue/Ratings'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontcolor='#000000' fontname='Benton Sans Book'>✅ 2. Which genres generate the highest revenue and ratings?</run>
+            <run>Æ&#10;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='tmdb-movies' name='federated.14myreq10eit07132r5n10eci0vo' />
+          </datasources>
+          <datasource-dependencies datasource='federated.14myreq10eit07132r5n10eci0vo'>
+            <column-instance column='[vote_average]' derivation='Avg' name='[avg:vote_average:qk]' pivot='key' type='quantitative' />
+            <column caption='Genres' datatype='string' name='[genres]' role='dimension' type='nominal' />
+            <column-instance column='[genres]' derivation='None' name='[none:genres:nk]' pivot='key' type='nominal' />
+            <column caption='Revenue' datatype='integer' name='[revenue]' role='measure' type='quantitative' />
+            <column-instance column='[revenue]' derivation='Sum' name='[sum:revenue:qk]' pivot='key' type='quantitative' />
+            <column caption='Vote Average' datatype='real' name='[vote_average]' role='measure' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]'>
+            <groupfilter function='level-members' level='[:Measure Names]' />
+          </filter>
+          <shelf-sorts>
+            <shelf-sort-v2 dimension-to-sort='[federated.14myreq10eit07132r5n10eci0vo].[none:genres:nk]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.14myreq10eit07132r5n10eci0vo].[sum:revenue:qk]' shelf='columns' />
+          </shelf-sorts>
+          <slices>
+            <column>[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk]' field-type='quantitative' fold='true' scope='rows' type='space' />
+            <format attr='title' class='0' field='[federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk]' scope='rows' value='Ratings' />
+          </style-rule>
+          <style-rule element='cell'>
+            <format attr='width' field='[federated.14myreq10eit07132r5n10eci0vo].[none:genres:nk]' value='47' />
+            <format attr='text-format' field='[federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk]' value='n#,##0.0;-#,##0.0' />
+          </style-rule>
+          <style-rule element='mark'>
+            <encoding attr='size' field='[federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk]' field-type='quantitative' max-size='1' min-size='0' type='quantsize' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+            <encodings>
+              <color column='[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]' />
+            </encodings>
+          </pane>
+          <pane id='1' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.14myreq10eit07132r5n10eci0vo].[sum:revenue:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+            <encodings>
+              <color column='[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]' />
+            </encodings>
+          </pane>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Circle' />
+            <encodings>
+              <color column='[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]' />
+              <size column='[federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk]' />
+              <text column='[federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='mark-labels-show' value='true' />
+                <format attr='size' value='0.53968197107315063' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>([federated.14myreq10eit07132r5n10eci0vo].[sum:revenue:qk] + [federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk])</rows>
+        <cols>[federated.14myreq10eit07132r5n10eci0vo].[none:genres:nk]</cols>
+      </table>
+      <simple-id uuid='{E8888DC1-1ACE-48F4-AA96-0934CC420B0B}' />
+    </worksheet>
+    <worksheet name='Sheet 6'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='tmdb-movies' name='federated.14myreq10eit07132r5n10eci0vo' />
+          </datasources>
+          <datasource-dependencies datasource='federated.14myreq10eit07132r5n10eci0vo'>
+            <column caption='Imdb Id' datatype='string' name='[imdb_id]' role='dimension' type='nominal' />
+            <column-instance column='[imdb_id]' derivation='None' name='[none:imdb_id:nk]' pivot='key' type='nominal' />
+            <column-instance column='[vote_average]' derivation='Sum' name='[sum:vote_average:qk]' pivot='key' type='quantitative' />
+            <column caption='Vote Average' datatype='real' name='[vote_average]' role='measure' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='cell'>
+            <format attr='width' value='126' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Circle' />
+            <encodings>
+              <color column='[federated.14myreq10eit07132r5n10eci0vo].[none:imdb_id:nk]' />
+            </encodings>
+            <reference-line axis-column='[federated.14myreq10eit07132r5n10eci0vo].[sum:vote_average:qk]' boxplot-mark-exclusion='false' boxplot-whisker-type='standard' enable-instant-analytics='true' formula='average' id='refline0' label-type='automatic' probability='95' scope='per-cell' symmetric='false' value-column='[federated.14myreq10eit07132r5n10eci0vo].[sum:vote_average:qk]' z-order='1' />
+            <style>
+              <style-rule element='mark'>
+                <format attr='size' value='0.25' />
+              </style-rule>
+              <style-rule element='pane'>
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.14myreq10eit07132r5n10eci0vo].[sum:vote_average:qk]</rows>
+        <cols />
+      </table>
+      <simple-id uuid='{C2A7E744-D30C-4223-BB5E-B0517BEA3556}' />
+    </worksheet>
+    <worksheet name='Top 20 Profitable Movies'>
       <layout-options>
         <title>
           <formatted-text>
@@ -23408,7 +23674,6 @@
             <column caption='Profit' datatype='real' datatype-customized='true' name='[Calculation_1675339108893261826]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='FLOAT([revenue] - [budget])' />
             </column>
-            <column-instance column='[Calculation_1675339108893261826]' derivation='Avg' name='[avg:Calculation_1675339108893261826:qk]' pivot='key' type='quantitative' />
             <column caption='Budget' datatype='integer' name='[budget]' role='measure' type='quantitative' />
             <column-instance column='[original_title]' derivation='None' name='[none:original_title:nk]' pivot='key' type='nominal' />
             <column caption='Original Title' datatype='string' name='[original_title]' role='dimension' type='nominal' />
@@ -23416,10 +23681,14 @@
             <column-instance column='[Calculation_1675339108893261826]' derivation='Sum' name='[sum:Calculation_1675339108893261826:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]'>
-            <groupfilter function='level-members' level='[none:original_title:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+            <groupfilter count='10' end='top' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
+              <groupfilter direction='DESC' expression='SUM([Calculation_1675339108893261826])' function='order' user:ui-marker='order'>
+                <groupfilter function='level-members' level='[none:original_title:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+              </groupfilter>
+            </groupfilter>
           </filter>
           <shelf-sorts>
-            <shelf-sort-v2 dimension-to-sort='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.14myreq10eit07132r5n10eci0vo].[avg:Calculation_1675339108893261826:qk]' shelf='rows' />
+            <shelf-sort-v2 dimension-to-sort='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.14myreq10eit07132r5n10eci0vo].[sum:Calculation_1675339108893261826:qk]' shelf='rows' />
           </shelf-sorts>
           <slices>
             <column>[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]</column>
@@ -23427,13 +23696,13 @@
           <aggregation value='true' />
         </view>
         <style>
+          <style-rule element='cell'>
+            <format attr='height' field='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]' value='48' />
+          </style-rule>
           <style-rule element='header'>
             <format attr='width' field='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]' value='236' />
           </style-rule>
           <style-rule element='table'>
-            <format attr='omit-on-special' field='[federated.14myreq10eit07132r5n10eci0vo].[avg:Calculation_1675339108893261826:qk]' value='false' />
-            <format attr='break-on-special' field='[federated.14myreq10eit07132r5n10eci0vo].[avg:Calculation_1675339108893261826:qk]' value='false' />
-            <format attr='show-null-value-warning' field='[federated.14myreq10eit07132r5n10eci0vo].[avg:Calculation_1675339108893261826:qk]' value='false' />
             <format attr='omit-on-special' field='[federated.14myreq10eit07132r5n10eci0vo].[sum:Calculation_1675339108893261826:qk]' value='false' />
             <format attr='break-on-special' field='[federated.14myreq10eit07132r5n10eci0vo].[sum:Calculation_1675339108893261826:qk]' value='false' />
             <format attr='show-null-value-warning' field='[federated.14myreq10eit07132r5n10eci0vo].[sum:Calculation_1675339108893261826:qk]' value='false' />
@@ -23448,7 +23717,6 @@
             <encodings>
               <color column='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]' />
             </encodings>
-            <dropline drop-when='selected' haslabel='false' x-axis='true' y-axis='false' />
             <style>
               <style-rule element='mark'>
                 <format attr='mark-labels-cull' value='true' />
@@ -23469,29 +23737,162 @@
       </table>
       <simple-id uuid='{CBE04612-7ECA-49D9-B761-C27C2FA9496C}' />
     </worksheet>
-    <worksheet name='Sheet 2'>
+    <worksheet name='Top10 Movies by ROI'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Top10 Movies by ROI (Outiliers Removed)</run>
+          </formatted-text>
+        </title>
+      </layout-options>
       <table>
         <view>
-          <datasources />
+          <datasources>
+            <datasource caption='tmdb-movies' name='federated.14myreq10eit07132r5n10eci0vo' />
+          </datasources>
+          <datasource-dependencies datasource='federated.14myreq10eit07132r5n10eci0vo'>
+            <column caption='ROI' datatype='real' name='[Calculation_1289436916128559104]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='([revenue] - [budget]) / [budget]' />
+            </column>
+            <column caption='STR(ROUND([ROI],2))+&apos;%&apos;' datatype='string' name='[Calculation_1289436916171644935]' role='dimension' type='nominal' user:unnamed='Top10 Movies by ROI'>
+              <calculation class='tableau' formula='STR(ROUND([Calculation_1289436916128559104],2))+&apos;%&apos;' />
+            </column>
+            <column caption='Profit' datatype='real' datatype-customized='true' name='[Calculation_1675339108893261826]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='FLOAT([revenue] - [budget])' />
+            </column>
+            <column-instance column='[Calculation_1289436916128559104]' derivation='Avg' name='[avg:Calculation_1289436916128559104:qk]' pivot='key' type='quantitative' />
+            <column caption='Budget' datatype='integer' name='[budget]' role='measure' type='quantitative' />
+            <column-instance column='[Calculation_1289436916171644935]' derivation='None' name='[none:Calculation_1289436916171644935:nk]' pivot='key' type='nominal' />
+            <column-instance column='[original_title]' derivation='None' name='[none:original_title:nk]' pivot='key' type='nominal' />
+            <column caption='Original Title' datatype='string' name='[original_title]' role='dimension' type='nominal' />
+            <column caption='Revenue' datatype='integer' name='[revenue]' role='measure' type='quantitative' />
+            <column-instance column='[Calculation_1675339108893261826]' derivation='Sum' name='[sum:Calculation_1675339108893261826:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]'>
+            <groupfilter count='10' end='top' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
+              <groupfilter direction='DESC' expression='AVG([Calculation_1289436916128559104])' function='order' user:ui-marker='order'>
+                <groupfilter expression='AVG([budget])&gt;=50000000 AND AVG([budget])&lt;=110000000' function='filter' user:ui-marker='filter-by'>
+                  <groupfilter function='level-members' level='[none:original_title:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+                </groupfilter>
+              </groupfilter>
+            </groupfilter>
+          </filter>
+          <shelf-sorts>
+            <shelf-sort-v2 dimension-to-sort='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.14myreq10eit07132r5n10eci0vo].[avg:Calculation_1289436916128559104:qk]' shelf='columns' />
+          </shelf-sorts>
+          <slices>
+            <column>[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]</column>
+          </slices>
           <aggregation value='true' />
         </view>
-        <style />
+        <style>
+          <style-rule element='cell'>
+            <format attr='width' field='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]' value='141' />
+            <format attr='text-align' field='[federated.14myreq10eit07132r5n10eci0vo].[sum:Calculation_1675339108893261826:qk]' value='left' />
+            <format attr='text-orientation' field='[federated.14myreq10eit07132r5n10eci0vo].[sum:Calculation_1675339108893261826:qk]' value='90' />
+            <format attr='vertical-align' field='[federated.14myreq10eit07132r5n10eci0vo].[sum:Calculation_1675339108893261826:qk]' value='top' />
+            <format attr='text-align' field='[federated.14myreq10eit07132r5n10eci0vo].[none:Calculation_1289436916171644935:nk]' value='left' />
+            <format attr='text-orientation' field='[federated.14myreq10eit07132r5n10eci0vo].[none:Calculation_1289436916171644935:nk]' value='0' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]' />
+              <text column='[federated.14myreq10eit07132r5n10eci0vo].[sum:Calculation_1675339108893261826:qk]' />
+              <text column='[federated.14myreq10eit07132r5n10eci0vo].[none:Calculation_1289436916171644935:nk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='mark-labels-show' value='true' />
+              </style-rule>
+              <style-rule element='pane'>
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.14myreq10eit07132r5n10eci0vo].[avg:Calculation_1289436916128559104:qk]</rows>
+        <cols>[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]</cols>
+      </table>
+      <simple-id uuid='{5283E74B-C06E-4F3D-98F1-6E8D6117D38C}' />
+    </worksheet>
+    <worksheet name='budget/revenue'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run bold='true' fontcolor='#000000' fontname='Benton Sans Book'>✅ 3. What is the relationship between budget and revenue?</run>
+            <run>Æ&#10;</run>
+          </formatted-text>
+        </title>
+      </layout-options>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='tmdb-movies' name='federated.14myreq10eit07132r5n10eci0vo' />
+          </datasources>
+          <datasource-dependencies datasource='federated.14myreq10eit07132r5n10eci0vo'>
+            <column caption='Budget' datatype='integer' name='[budget]' role='measure' type='quantitative' />
+            <column caption='Genres' datatype='string' name='[genres]' role='dimension' type='nominal' />
+            <column-instance column='[budget]' derivation='None' name='[none:budget:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[genres]' derivation='None' name='[none:genres:nk]' pivot='key' type='nominal' />
+            <column-instance column='[revenue]' derivation='None' name='[none:revenue:qk]' pivot='key' type='quantitative' />
+            <column caption='Popularity' datatype='real' name='[popularity]' role='measure' type='quantitative' />
+            <column caption='Revenue' datatype='integer' name='[revenue]' role='measure' type='quantitative' />
+            <column-instance column='[popularity]' derivation='Sum' name='[sum:popularity:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='quantitative' column='[federated.14myreq10eit07132r5n10eci0vo].[none:budget:qk]' included-values='in-range'>
+            <min>1</min>
+            <max>260000000</max>
+          </filter>
+          <slices>
+            <column>[federated.14myreq10eit07132r5n10eci0vo].[none:budget:qk]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.14myreq10eit07132r5n10eci0vo].[none:budget:qk]' field-type='quantitative' max='286967733' min='-638136' range-type='fixed' scope='cols' type='space' />
+            <encoding attr='space' class='0' field='[federated.14myreq10eit07132r5n10eci0vo].[none:revenue:qk]' field-type='quantitative' max='3112935615' min='-6543374' range-type='fixed' scope='rows' type='space' />
+          </style-rule>
+          <style-rule element='mark'>
+            <encoding attr='size' field='[federated.14myreq10eit07132r5n10eci0vo].[none:revenue:qk]' field-type='quantitative' max-size='1' min-size='0' type='quantsize' />
+            <encoding attr='size' field='[federated.14myreq10eit07132r5n10eci0vo].[sum:popularity:qk]' field-type='quantitative' max-size='1' min-size='0' type='quantsize' />
+          </style-rule>
+        </style>
         <panes>
           <pane selection-relaxation-option='selection-relaxation-allow'>
             <view>
               <breakdown value='auto' />
             </view>
             <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.14myreq10eit07132r5n10eci0vo].[none:genres:nk]' />
+              <size column='[federated.14myreq10eit07132r5n10eci0vo].[sum:popularity:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='size' value='1.1223320960998535' />
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='mark-labels-show' value='false' />
+              </style-rule>
+            </style>
           </pane>
         </panes>
-        <rows />
-        <cols />
+        <rows>[federated.14myreq10eit07132r5n10eci0vo].[none:revenue:qk]</rows>
+        <cols>[federated.14myreq10eit07132r5n10eci0vo].[none:budget:qk]</cols>
       </table>
-      <simple-id uuid='{3F51FA3E-C6C5-41C7-B0C8-0A255AB3B9C6}' />
+      <simple-id uuid='{1E7BCE3C-B656-463B-9D3B-9C7720575186}' />
     </worksheet>
   </worksheets>
   <windows source-height='37'>
-    <window class='worksheet' maximized='true' name='Sheet 1'>
+    <window class='worksheet' name='Top 20 Profitable Movies'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -23519,7 +23920,7 @@
       </cards>
       <simple-id uuid='{5D03066E-2326-435D-B9B4-A7AA7A2B185A}' />
     </window>
-    <window class='worksheet' name='Sheet 2'>
+    <window class='worksheet' name='Budget/Revenue Over Years'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -23539,8 +23940,134 @@
             <card type='title' />
           </strip>
         </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='5' param='[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]' type='color' />
+          </strip>
+        </edge>
       </cards>
       <simple-id uuid='{15DDEF25-2A77-4C24-B5DC-83215B3D3F83}' />
+    </window>
+    <window class='worksheet' name='budget/revenue'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.14myreq10eit07132r5n10eci0vo].[none:genres:nk]' type='color' />
+            <card pane-specification-id='0' param='[federated.14myreq10eit07132r5n10eci0vo].[sum:popularity:qk]' type='size' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <floating-toolbar-visibility value='1' />
+        <default-map-tool-selection tool='2' />
+      </viewpoint>
+      <simple-id uuid='{96CC0BBE-603A-4CDC-8FF6-E37C22E3C4EE}' />
+    </window>
+    <window class='worksheet' name='Genres/Revenue/Ratings'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='1' param='[federated.14myreq10eit07132r5n10eci0vo].[:Measure Names]' type='color' />
+            <card pane-specification-id='2' param='[federated.14myreq10eit07132r5n10eci0vo].[avg:vote_average:qk]' type='size' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{1723F35E-CD28-4DD3-BD47-F0BCB10BEE1F}' />
+    </window>
+    <window class='worksheet' maximized='true' name='Top10 Movies by ROI'>
+      <cards>
+        <edge name='left'>
+          <strip size='168'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.14myreq10eit07132r5n10eci0vo].[none:original_title:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='entire-view' />
+      </viewpoint>
+      <simple-id uuid='{B390336E-D68A-41E6-9AF8-92E57CEAD3C8}' />
+    </window>
+    <window class='worksheet' name='Sheet 6'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.14myreq10eit07132r5n10eci0vo].[none:imdb_id:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{B20906A5-2228-47BE-93B5-39A6C1F6CC0C}' />
     </window>
   </windows>
 </workbook>
