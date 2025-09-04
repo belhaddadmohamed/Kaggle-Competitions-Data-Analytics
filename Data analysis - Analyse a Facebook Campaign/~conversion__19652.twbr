@@ -11,9 +11,12 @@
     <ObjectModelExtractV2 />
     <ObjectModelTableType />
     <SchemaViewerObjectModel />
+    <SetMembershipControl />
     <SheetIdentifierTracking />
+    <SortTagCleanup />
     <_.fcp.VConnDownstreamExtractsWithWarnings.true...VConnDownstreamExtractsWithWarnings />
     <WindowsPersistSimpleIdentifiers />
+    <WorksheetBackgroundTransparency />
   </document-format-change-manifest>
   <preferences>
     <preference name='ui.encoding.shelf.height' value='24' />
@@ -210,6 +213,8 @@
       <column caption='CPC' datatype='real' name='[Calculation_1382886610353627138]' role='measure' type='quantitative'>
         <calculation class='tableau' formula='[Spent] / [Clicks]' />
       </column>
+      <column datatype='integer' name='[Clicks]' role='measure' type='quantitative' />
+      <column datatype='integer' name='[Impressions]' role='measure' type='quantitative' />
       <column aggregation='None' caption='Spent (bin)' datatype='integer' name='[Spent (bin)]' role='dimension' type='ordinal'>
         <calculation class='bin' decimals='-1' formula='[Spent]' peg='0' size='20.2' />
       </column>
@@ -220,16 +225,40 @@
       <column caption='Age' datatype='string' name='[age]' role='dimension' type='nominal' />
       <column caption='Fb Campaign Id' datatype='integer' name='[fb_campaign_id]' role='dimension' type='ordinal' />
       <column caption='Gender' datatype='string' name='[gender]' role='dimension' type='nominal' />
-      <column caption='Interest' datatype='integer' name='[interest]' role='measure' type='quantitative' />
-      <column caption='Xyz Campaign Id' datatype='integer' name='[xyz_campaign_id]' role='dimension' type='ordinal' />
+      <column aggregation='Count' caption='Interest' datatype='integer' datatype-customized='true' name='[interest]' role='measure' type='quantitative' />
+      <column caption='Xyz Campaign Id' datatype='integer' name='[xyz_campaign_id]' role='dimension' type='ordinal'>
+        <aliases>
+          <alias key='916' value='Campaign 916' />
+          <alias key='936' value='Campaign 936' />
+          <alias key='1178' value='Campaign 1178' />
+        </aliases>
+      </column>
+      <column-instance column='[interest]' derivation='Attribute' name='[attr:interest:ok]' pivot='key' type='ordinal' />
+      <column-instance column='[Approved_Conversion]' derivation='Avg' name='[avg:Approved_Conversion:qk]' pivot='key' type='quantitative' />
       <column-instance column='[Calculation_1382886610353328128]' derivation='Avg' name='[avg:Calculation_1382886610353328128:qk]' pivot='key' type='quantitative' />
       <column-instance column='[Calculation_1382886610353483777]' derivation='Avg' name='[avg:Calculation_1382886610353483777:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Clicks]' derivation='Avg' name='[avg:Clicks:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Impressions]' derivation='Avg' name='[avg:Impressions:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Total_Conversion]' derivation='Avg' name='[avg:Total_Conversion:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[interest]' derivation='Count' name='[cnt:interest:ok]' pivot='key' type='ordinal' />
+      <column-instance column='[Impressions]' derivation='Median' name='[med:Impressions:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Forecast Indicator]' derivation='None' forecast-column-base='[Forecast Indicator]' forecast-column-type='forecast-indicator' name='[none:Forecast Indicator:nk]' pivot='key' type='nominal' />
       <column-instance column='[ad_id]' derivation='None' name='[none:ad_id:ok]' pivot='key' type='ordinal' />
       <column-instance column='[age]' derivation='None' name='[none:age:nk]' pivot='key' type='nominal' />
       <column-instance column='[fb_campaign_id]' derivation='None' name='[none:fb_campaign_id:ok]' pivot='key' type='ordinal' />
       <column-instance column='[gender]' derivation='None' name='[none:gender:nk]' pivot='key' type='nominal' />
       <column-instance column='[xyz_campaign_id]' derivation='None' name='[none:xyz_campaign_id:ok]' pivot='key' type='ordinal' />
+      <column-instance column='[Approved_Conversion]' derivation='Sum' name='[sum:Approved_Conversion:qk]' pivot='key' type='quantitative' />
       <column-instance column='[Calculation_1382886610353328128]' derivation='Sum' name='[sum:Calculation_1382886610353328128:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Clicks]' derivation='Sum' name='[sum:Clicks:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Impressions]' derivation='Sum' name='[sum:Impressions:qk]' pivot='key' type='quantitative' />
+      <column-instance column='[Total_Conversion]' derivation='Sum' name='[sum:Total_Conversion:qk]' pivot='key' type='quantitative' />
+      <group caption='Action (Age,Xyz Campaign Id)' hidden='true' name='[Action (Age,Xyz Campaign Id)]' name-style='unqualified' user:auto-column='sheet_link'>
+        <groupfilter function='crossjoin'>
+          <groupfilter function='level-members' level='[age]' />
+          <groupfilter function='level-members' level='[xyz_campaign_id]' />
+        </groupfilter>
+      </group>
       <group hidden='true' name='[Inclusions (Age,Xyz Campaign Id)]' name-style='unqualified' user:auto-column='include'>
         <groupfilter function='crossjoin'>
           <groupfilter function='level-members' level='[none:age:nk]' />
@@ -5920,11 +5949,331 @@
             <map to='#4e79a7'>
               <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk]&quot;</bucket>
             </map>
+            <map to='#59a14f'>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Approved_Conversion:qk]&quot;</bucket>
+            </map>
+            <map to='#59a14f'>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Approved_Conversion:qk]&quot;</bucket>
+            </map>
+            <map to='#76b7b2'>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Impressions:qk]&quot;</bucket>
+            </map>
+            <map to='#76b7b2'>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[med:Impressions:qk]&quot;</bucket>
+            </map>
+            <map to='#76b7b2'>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Impressions:qk]&quot;</bucket>
+            </map>
+            <map to='#b07aa1'>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Total_Conversion:qk]&quot;</bucket>
+            </map>
+            <map to='#b07aa1'>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Total_Conversion:qk]&quot;</bucket>
+            </map>
             <map to='#e15759'>
               <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Calculation_1382886610353328128:qk]&quot;</bucket>
             </map>
-            <map to='#f28e2b'>
+            <map to='#edc948'>
               <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353328128:qk]&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Clicks:qk]&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Clicks:qk]&quot;</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:gender:nk]&#10;[:Measure Names]' type='palette'>
+            <map-pri to='multiordinal_blue_10_0'>
+              <bucket>&quot;F&quot;</bucket>
+            </map-pri>
+            <map-pri to='multiordinal_orange_10_0'>
+              <bucket>&quot;M&quot;</bucket>
+            </map-pri>
+          </encoding>
+          <encoding attr='color' field='[cnt:interest:ok]' type='palette'>
+            <map to='#499894'>
+              <bucket>10</bucket>
+            </map>
+            <map to='#499894'>
+              <bucket>12</bucket>
+            </map>
+            <map to='#499894'>
+              <bucket>23</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>1</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>2</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>60</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>1143</bucket>
+            </map>
+            <map to='#59a14f'>
+              <bucket>8</bucket>
+            </map>
+            <map to='#59a14f'>
+              <bucket>37</bucket>
+            </map>
+            <map to='#79706e'>
+              <bucket>16</bucket>
+            </map>
+            <map to='#79706e'>
+              <bucket>18</bucket>
+            </map>
+            <map to='#79706e'>
+              <bucket>32</bucket>
+            </map>
+            <map to='#86bcb6'>
+              <bucket>13</bucket>
+            </map>
+            <map to='#86bcb6'>
+              <bucket>14</bucket>
+            </map>
+            <map to='#86bcb6'>
+              <bucket>24</bucket>
+            </map>
+            <map to='#8cd17d'>
+              <bucket>11</bucket>
+            </map>
+            <map to='#8cd17d'>
+              <bucket>40</bucket>
+            </map>
+            <map to='#9d7660'>
+              <bucket>48</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>3</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>5</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>28</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>77</bucket>
+            </map>
+            <map to='#b07aa1'>
+              <bucket>43</bucket>
+            </map>
+            <map to='#b6992d'>
+              <bucket>9</bucket>
+            </map>
+            <map to='#b6992d'>
+              <bucket>19</bucket>
+            </map>
+            <map to='#b6992d'>
+              <bucket>45</bucket>
+            </map>
+            <map to='#bab0ac'>
+              <bucket>30</bucket>
+            </map>
+            <map to='#bab0ac'>
+              <bucket>33</bucket>
+            </map>
+            <map to='#d37295'>
+              <bucket>36</bucket>
+            </map>
+            <map to='#d4a6c8'>
+              <bucket>46</bucket>
+            </map>
+            <map to='#d7b5a6'>
+              <bucket>27</bucket>
+            </map>
+            <map to='#d7b5a6'>
+              <bucket>49</bucket>
+            </map>
+            <map to='#d7b5a6'>
+              <bucket>51</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>15</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>25</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>72</bucket>
+            </map>
+            <map to='#f1ce63'>
+              <bucket>21</bucket>
+            </map>
+            <map to='#f1ce63'>
+              <bucket>68</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>4</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>6</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>31</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>85</bucket>
+            </map>
+            <map to='#fabfd2'>
+              <bucket>41</bucket>
+            </map>
+            <map to='#ff9d9a'>
+              <bucket>17</bucket>
+            </map>
+            <map to='#ff9d9a'>
+              <bucket>26</bucket>
+            </map>
+            <map to='#ffbe7d'>
+              <bucket>7</bucket>
+            </map>
+            <map to='#ffbe7d'>
+              <bucket>140</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[attr:interest:ok]' type='palette'>
+            <map to='#499894'>
+              <bucket>31</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>109</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>111</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>1143</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>%many-values%</bucket>
+            </map>
+            <map to='#59a14f'>
+              <bucket>16</bucket>
+            </map>
+            <map to='#59a14f'>
+              <bucket>21</bucket>
+            </map>
+            <map to='#79706e'>
+              <bucket>25</bucket>
+            </map>
+            <map to='#79706e'>
+              <bucket>64</bucket>
+            </map>
+            <map to='#86bcb6'>
+              <bucket>32</bucket>
+            </map>
+            <map to='#8cd17d'>
+              <bucket>18</bucket>
+            </map>
+            <map to='#8cd17d'>
+              <bucket>22</bucket>
+            </map>
+            <map to='#9d7660'>
+              <bucket>103</bucket>
+            </map>
+            <map to='#9d7660'>
+              <bucket>107</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>2</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>112</bucket>
+            </map>
+            <map to='#a0cbe8'>
+              <bucket>114</bucket>
+            </map>
+            <map to='#b07aa1'>
+              <bucket>29</bucket>
+            </map>
+            <map to='#b07aa1'>
+              <bucket>101</bucket>
+            </map>
+            <map to='#b6992d'>
+              <bucket>19</bucket>
+            </map>
+            <map to='#b6992d'>
+              <bucket>24</bucket>
+            </map>
+            <map to='#bab0ac'>
+              <bucket>65</bucket>
+            </map>
+            <map to='#bab0ac'>
+              <bucket>106</bucket>
+            </map>
+            <map to='#d37295'>
+              <bucket>27</bucket>
+            </map>
+            <map to='#d37295'>
+              <bucket>66</bucket>
+            </map>
+            <map to='#d4a6c8'>
+              <bucket>30</bucket>
+            </map>
+            <map to='#d4a6c8'>
+              <bucket>102</bucket>
+            </map>
+            <map to='#d7b5a6'>
+              <bucket>104</bucket>
+            </map>
+            <map to='#d7b5a6'>
+              <bucket>108</bucket>
+            </map>
+            <map to='#d7b5a6'>
+              <bucket>110</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>23</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>36</bucket>
+            </map>
+            <map to='#f1ce63'>
+              <bucket>20</bucket>
+            </map>
+            <map to='#f1ce63'>
+              <bucket>26</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>7</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>10</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>113</bucket>
+            </map>
+            <map to='#fabfd2'>
+              <bucket>28</bucket>
+            </map>
+            <map to='#fabfd2'>
+              <bucket>100</bucket>
+            </map>
+            <map to='#ff9d9a'>
+              <bucket>63</bucket>
+            </map>
+            <map to='#ff9d9a'>
+              <bucket>105</bucket>
+            </map>
+            <map to='#ffbe7d'>
+              <bucket>15</bucket>
+            </map>
+          </encoding>
+          <encoding attr='color' field='[none:age:nk]' type='palette'>
+            <map to='#4e79a7'>
+              <bucket>&quot;30-34&quot;</bucket>
+            </map>
+            <map to='#76b7b2'>
+              <bucket>&quot;45-49&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;40-44&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;35-39&quot;</bucket>
             </map>
           </encoding>
         </style-rule>
@@ -5932,6 +6281,14 @@
       <semantic-values>
         <semantic-value key='[Country].[Name]' value='&quot;Algeria&quot;' />
       </semantic-values>
+      <default-sorts>
+        <manual-sort column='[none:Forecast Indicator:nk]' direction='ASC'>
+          <dictionary>
+            <bucket>&quot;Actual&quot;</bucket>
+            <bucket>&quot;Estimate&quot;</bucket>
+          </dictionary>
+        </manual-sort>
+      </default-sorts>
       <field-sort-info field-sort-order-type='custom-order'>
         <field-sort-custom-order field='ad_id' />
         <field-sort-custom-order field='xyz_campaign_id' />
@@ -5982,6 +6339,16 @@
       </object-graph>
     </datasource>
   </datasources>
+  <actions>
+    <action caption='Filter 1 (generated)' name='[Action1_34D39B5DC3E247D1922F7E689B91A08A]'>
+      <activation auto-clear='true' type='on-select' />
+      <source type='sheet' worksheet='Engagement (Age)' />
+      <command command='tsc:tsl-filter'>
+        <param name='special-fields' value='all' />
+        <param name='target' value='Engagement (Age)' />
+      </command>
+    </action>
+  </actions>
   <worksheets>
     <worksheet name='Ad Spend($)'>
       <table>
@@ -6058,8 +6425,17 @@
             <column datatype='real' name='[Spent]' role='measure' type='quantitative' />
             <column-instance column='[Calculation_1382886610353328128]' derivation='Avg' name='[avg:Calculation_1382886610353328128:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Calculation_1382886610353483777]' derivation='Avg' name='[avg:Calculation_1382886610353483777:qk]' pivot='key' type='quantitative' />
+            <column caption='Gender' datatype='string' name='[gender]' role='dimension' type='nominal' />
+            <column-instance column='[gender]' derivation='None' name='[none:gender:nk]' pivot='key' type='nominal' />
             <column-instance column='[xyz_campaign_id]' derivation='None' name='[none:xyz_campaign_id:ok]' pivot='key' type='ordinal' />
-            <column caption='Xyz Campaign Id' datatype='integer' name='[xyz_campaign_id]' role='dimension' type='ordinal' />
+            <column-instance column='[Calculation_1382886610353483777]' derivation='Sum' name='[sum:Calculation_1382886610353483777:qk]' pivot='key' type='quantitative' />
+            <column caption='Xyz Campaign Id' datatype='integer' name='[xyz_campaign_id]' role='dimension' type='ordinal'>
+              <aliases>
+                <alias key='916' value='Campaign 916' />
+                <alias key='936' value='Campaign 936' />
+                <alias key='1178' value='Campaign 1178' />
+              </aliases>
+            </column>
           </datasource-dependencies>
           <shelf-sorts>
             <shelf-sort-v2 dimension-to-sort='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:xyz_campaign_id:ok]' direction='ASC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk]' shelf='columns' />
@@ -6080,10 +6456,11 @@
               <breakdown value='auto' />
             </view>
             <mark class='Bar' />
-            <encodings>
-              <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]' />
-            </encodings>
             <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
               <style-rule element='pane'>
                 <format attr='minwidth' value='-1' />
                 <format attr='maxwidth' value='-1' />
@@ -6096,9 +6473,14 @@
             </view>
             <mark class='Bar' />
             <encodings>
-              <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]' />
+              <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:gender:nk]' />
+              <text column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk]' />
             </encodings>
             <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
               <style-rule element='pane'>
                 <format attr='minwidth' value='-1' />
                 <format attr='maxwidth' value='-1' />
@@ -6112,8 +6494,13 @@
             <mark class='Line' />
             <encodings>
               <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]' />
+              <text column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Calculation_1382886610353483777:qk]' />
             </encodings>
             <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
               <style-rule element='pane'>
                 <format attr='minwidth' value='-1' />
                 <format attr='maxwidth' value='-1' />
@@ -6126,23 +6513,40 @@
       </table>
       <simple-id uuid='{B345B5CD-1D17-4AD8-9849-9299C32F9A3D}' />
     </worksheet>
-    <worksheet name='Campaign Spend($)'>
+    <worksheet name='Engagement (Age)'>
       <table>
         <view>
           <datasources>
             <datasource caption='conversion' name='federated.036z2v01ffh29n0zw235a0pu2xo1' />
           </datasources>
           <datasource-dependencies datasource='federated.036z2v01ffh29n0zw235a0pu2xo1'>
+            <column datatype='integer' name='[Clicks]' role='measure' type='quantitative' />
             <column datatype='real' name='[Spent]' role='measure' type='quantitative' />
             <column caption='Age' datatype='string' name='[age]' role='dimension' type='nominal' />
             <column-instance column='[age]' derivation='None' name='[none:age:nk]' pivot='key' type='nominal' />
             <column-instance column='[xyz_campaign_id]' derivation='None' name='[none:xyz_campaign_id:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Clicks]' derivation='Sum' name='[sum:Clicks:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Spent]' derivation='Sum' name='[sum:Spent:qk]' pivot='key' type='quantitative' />
-            <column caption='Xyz Campaign Id' datatype='integer' name='[xyz_campaign_id]' role='dimension' type='ordinal' />
+            <column caption='Xyz Campaign Id' datatype='integer' name='[xyz_campaign_id]' role='dimension' type='ordinal'>
+              <aliases>
+                <alias key='916' value='Campaign 916' />
+                <alias key='936' value='Campaign 936' />
+                <alias key='1178' value='Campaign 1178' />
+              </aliases>
+            </column>
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[Action (Age,Xyz Campaign Id)]'>
+            <groupfilter function='crossjoin' user:ui-action-filter='[Action1_34D39B5DC3E247D1922F7E689B91A08A]' user:ui-enumeration='all' user:ui-marker='enumerate'>
+              <groupfilter function='level-members' level='[age]' />
+              <groupfilter function='level-members' level='[xyz_campaign_id]' />
+            </groupfilter>
+          </filter>
           <shelf-sorts>
             <shelf-sort-v2 dimension-to-sort='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:xyz_campaign_id:ok]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Spent:qk]' shelf='columns' />
           </shelf-sorts>
+          <slices>
+            <column>[federated.036z2v01ffh29n0zw235a0pu2xo1].[Action (Age,Xyz Campaign Id)]</column>
+          </slices>
           <aggregation value='true' />
         </view>
         <style>
@@ -6151,7 +6555,7 @@
           </style-rule>
         </style>
         <panes>
-          <pane selection-relaxation-option='selection-relaxation-allow'>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow'>
             <view>
               <breakdown value='auto' />
             </view>
@@ -6167,28 +6571,38 @@
               <style-rule element='pane'>
                 <format attr='minwidth' value='-1' />
                 <format attr='maxwidth' value='-1' />
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
               </style-rule>
             </style>
           </pane>
         </panes>
-        <rows>[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Spent:qk]</rows>
+        <rows>[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Clicks:qk]</rows>
         <cols>[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:xyz_campaign_id:ok]</cols>
       </table>
       <simple-id uuid='{048807AE-D8E2-4A43-A03B-CB23B93F6796}' />
     </worksheet>
-    <worksheet name='Campaign Spend($) (2)'>
+    <worksheet name='Engagement (Gender)'>
       <table>
         <view>
           <datasources>
             <datasource caption='conversion' name='federated.036z2v01ffh29n0zw235a0pu2xo1' />
           </datasources>
           <datasource-dependencies datasource='federated.036z2v01ffh29n0zw235a0pu2xo1'>
+            <column datatype='integer' name='[Clicks]' role='measure' type='quantitative' />
             <column datatype='real' name='[Spent]' role='measure' type='quantitative' />
             <column caption='Gender' datatype='string' name='[gender]' role='dimension' type='nominal' />
             <column-instance column='[gender]' derivation='None' name='[none:gender:nk]' pivot='key' type='nominal' />
             <column-instance column='[xyz_campaign_id]' derivation='None' name='[none:xyz_campaign_id:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Clicks]' derivation='Sum' name='[sum:Clicks:qk]' pivot='key' type='quantitative' />
             <column-instance column='[Spent]' derivation='Sum' name='[sum:Spent:qk]' pivot='key' type='quantitative' />
-            <column caption='Xyz Campaign Id' datatype='integer' name='[xyz_campaign_id]' role='dimension' type='ordinal' />
+            <column caption='Xyz Campaign Id' datatype='integer' name='[xyz_campaign_id]' role='dimension' type='ordinal'>
+              <aliases>
+                <alias key='916' value='Campaign 916' />
+                <alias key='936' value='Campaign 936' />
+                <alias key='1178' value='Campaign 1178' />
+              </aliases>
+            </column>
           </datasource-dependencies>
           <shelf-sorts>
             <shelf-sort-v2 dimension-to-sort='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:xyz_campaign_id:ok]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Spent:qk]' shelf='columns' />
@@ -6201,7 +6615,7 @@
           </style-rule>
         </style>
         <panes>
-          <pane selection-relaxation-option='selection-relaxation-allow'>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow'>
             <view>
               <breakdown value='auto' />
             </view>
@@ -6217,18 +6631,401 @@
               <style-rule element='pane'>
                 <format attr='minwidth' value='-1' />
                 <format attr='maxwidth' value='-1' />
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
               </style-rule>
             </style>
           </pane>
         </panes>
-        <rows>[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Spent:qk]</rows>
+        <rows>[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Clicks:qk]</rows>
         <cols>[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:xyz_campaign_id:ok]</cols>
       </table>
       <simple-id uuid='{2B3C2139-2C07-4A4F-B032-8A2C56838AF4}' />
     </worksheet>
+    <worksheet name='Engagement (Segment)'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='conversion' name='federated.036z2v01ffh29n0zw235a0pu2xo1' />
+          </datasources>
+          <datasource-dependencies datasource='federated.036z2v01ffh29n0zw235a0pu2xo1'>
+            <column caption='Approved Conversion' datatype='integer' name='[Approved_Conversion]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Clicks]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Impressions]' role='measure' type='quantitative' />
+            <column caption='Total Conversion' datatype='integer' name='[Total_Conversion]' role='measure' type='quantitative' />
+            <column caption='Age' datatype='string' name='[age]' role='dimension' type='nominal' />
+            <column caption='Gender' datatype='string' name='[gender]' role='dimension' type='nominal' />
+            <column-instance column='[age]' derivation='None' name='[none:age:nk]' pivot='key' type='nominal' />
+            <column-instance column='[gender]' derivation='None' name='[none:gender:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Approved_Conversion]' derivation='Sum' name='[sum:Approved_Conversion:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Clicks]' derivation='Sum' name='[sum:Clicks:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Impressions]' derivation='Sum' name='[sum:Impressions:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Total_Conversion]' derivation='Sum' name='[sum:Total_Conversion:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <filter class='categorical' column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]'>
+            <groupfilter function='union' user:op='manual'>
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Clicks:qk]&quot;' />
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Total_Conversion:qk]&quot;' />
+              <groupfilter function='member' level='[:Measure Names]' member='&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Approved_Conversion:qk]&quot;' />
+            </groupfilter>
+          </filter>
+          <manual-sort column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]' direction='ASC'>
+            <dictionary>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Clicks:qk]&quot;</bucket>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Total_Conversion:qk]&quot;</bucket>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Approved_Conversion:qk]&quot;</bucket>
+              <bucket>&quot;[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Impressions:qk]&quot;</bucket>
+            </dictionary>
+          </manual-sort>
+          <slices>
+            <column>[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]</column>
+          </slices>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <format attr='title' class='0' field='[federated.036z2v01ffh29n0zw235a0pu2xo1].[Multiple Values]' scope='rows' value='Value' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:age:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.036z2v01ffh29n0zw235a0pu2xo1].[Multiple Values]</rows>
+        <cols>([federated.036z2v01ffh29n0zw235a0pu2xo1].[none:age:nk] / ([federated.036z2v01ffh29n0zw235a0pu2xo1].[none:gender:nk] / [federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]))</cols>
+      </table>
+      <simple-id uuid='{93284413-22B4-40C8-8592-AD577E2B97C9}' />
+    </worksheet>
+    <worksheet name='Interests CPA'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='conversion' name='federated.036z2v01ffh29n0zw235a0pu2xo1' />
+          </datasources>
+          <datasource-dependencies datasource='federated.036z2v01ffh29n0zw235a0pu2xo1'>
+            <column caption='Approved Conversion' datatype='integer' name='[Approved_Conversion]' role='measure' type='quantitative' />
+            <column caption='CTR' datatype='real' name='[Calculation_1382886610353328128]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='[Clicks] / [Impressions] * 100' />
+            </column>
+            <column caption='CPA' datatype='real' name='[Calculation_1382886610353483777]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='[Spent] / [Approved_Conversion]' />
+            </column>
+            <column datatype='integer' name='[Clicks]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Impressions]' role='measure' type='quantitative' />
+            <column datatype='real' name='[Spent]' role='measure' type='quantitative' />
+            <column-instance column='[interest]' derivation='Attribute' name='[attr:interest:ok]' pivot='key' type='ordinal' />
+            <column-instance column='[Calculation_1382886610353328128]' derivation='Avg' name='[avg:Calculation_1382886610353328128:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_1382886610353483777]' derivation='Avg' name='[avg:Calculation_1382886610353483777:qk]' pivot='key' type='quantitative' />
+            <column aggregation='Count' caption='Interest' datatype='integer' datatype-customized='true' name='[interest]' role='measure' type='quantitative' />
+            <column-instance column='[interest]' derivation='None' name='[none:interest:ok]' pivot='key' type='ordinal' />
+          </datasource-dependencies>
+          <manual-sort column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:interest:ok]' direction='ASC'>
+            <dictionary>
+              <bucket>%all%</bucket>
+              <bucket>31</bucket>
+              <bucket>36</bucket>
+              <bucket>111</bucket>
+              <bucket>7</bucket>
+              <bucket>102</bucket>
+              <bucket>112</bucket>
+              <bucket>21</bucket>
+              <bucket>65</bucket>
+              <bucket>2</bucket>
+              <bucket>15</bucket>
+              <bucket>24</bucket>
+              <bucket>22</bucket>
+              <bucket>103</bucket>
+              <bucket>101</bucket>
+              <bucket>104</bucket>
+              <bucket>64</bucket>
+              <bucket>30</bucket>
+              <bucket>66</bucket>
+              <bucket>23</bucket>
+              <bucket>20</bucket>
+              <bucket>29</bucket>
+              <bucket>113</bucket>
+              <bucket>110</bucket>
+              <bucket>105</bucket>
+              <bucket>18</bucket>
+              <bucket>10</bucket>
+              <bucket>106</bucket>
+              <bucket>107</bucket>
+              <bucket>16</bucket>
+              <bucket>26</bucket>
+              <bucket>63</bucket>
+              <bucket>19</bucket>
+              <bucket>28</bucket>
+              <bucket>25</bucket>
+              <bucket>32</bucket>
+              <bucket>114</bucket>
+              <bucket>27</bucket>
+              <bucket>108</bucket>
+              <bucket>109</bucket>
+              <bucket>100</bucket>
+            </dictionary>
+          </manual-sort>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='header'>
+            <format attr='width' field='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:interest:ok]' value='100' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane id='1' selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <mark-sizing mark-sizing-setting='marks-scaling-off' />
+            <encodings>
+              <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[attr:interest:ok]' />
+            </encodings>
+            <reference-line axis-column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk]' enable-instant-analytics='true' formula='average' id='refline0' label-type='automatic' probability='95' scope='per-pane' value-column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk]' z-order='1' />
+            <reference-line axis-column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353328128:qk]' enable-instant-analytics='true' formula='average' id='refline1' label-type='automatic' probability='95' scope='per-pane' value-column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353328128:qk]' z-order='2' />
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='size' value='1.7471270561218262' />
+                <format attr='mark-labels-show' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <mark-sizing mark-sizing-setting='marks-scaling-off' />
+            <encodings>
+              <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[attr:interest:ok]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='size' value='1.7471270561218262' />
+                <format attr='mark-labels-show' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='3' selection-relaxation-option='selection-relaxation-allow' x-axis-name='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353328128:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <mark-sizing mark-sizing-setting='marks-scaling-off' />
+            <encodings>
+              <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[attr:interest:ok]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-cull' value='true' />
+                <format attr='size' value='1.7471270561218262' />
+                <format attr='mark-labels-show' value='false' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:interest:ok]</rows>
+        <cols>([federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk] + [federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353328128:qk])</cols>
+      </table>
+      <simple-id uuid='{A63E4D0F-3018-4474-AE75-CB87A32AD258}' />
+    </worksheet>
+    <worksheet name='Segment CTR/CPA'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='conversion' name='federated.036z2v01ffh29n0zw235a0pu2xo1' />
+          </datasources>
+          <datasource-dependencies datasource='federated.036z2v01ffh29n0zw235a0pu2xo1'>
+            <column caption='Approved Conversion' datatype='integer' name='[Approved_Conversion]' role='measure' type='quantitative' />
+            <column caption='CTR' datatype='real' name='[Calculation_1382886610353328128]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='[Clicks] / [Impressions] * 100' />
+            </column>
+            <column caption='CPA' datatype='real' name='[Calculation_1382886610353483777]' role='measure' type='quantitative'>
+              <calculation class='tableau' formula='[Spent] / [Approved_Conversion]' />
+            </column>
+            <column datatype='integer' name='[Clicks]' role='measure' type='quantitative' />
+            <column datatype='integer' name='[Impressions]' role='measure' type='quantitative' />
+            <column datatype='real' name='[Spent]' role='measure' type='quantitative' />
+            <column caption='Age' datatype='string' name='[age]' role='dimension' type='nominal' />
+            <column-instance column='[Calculation_1382886610353328128]' derivation='Avg' name='[avg:Calculation_1382886610353328128:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[Calculation_1382886610353483777]' derivation='Avg' name='[avg:Calculation_1382886610353483777:qk]' pivot='key' type='quantitative' />
+            <column caption='Gender' datatype='string' name='[gender]' role='dimension' type='nominal' />
+            <column-instance column='[age]' derivation='None' name='[none:age:nk]' pivot='key' type='nominal' />
+            <column-instance column='[gender]' derivation='None' name='[none:gender:nk]' pivot='key' type='nominal' />
+            <column-instance column='[Calculation_1382886610353328128]' derivation='Sum' name='[sum:Calculation_1382886610353328128:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <shelf-sorts>
+            <shelf-sort-v2 dimension-to-sort='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:age:nk]' direction='ASC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk]' shelf='columns' />
+          </shelf-sorts>
+          <aggregation value='true' />
+        </view>
+        <style>
+          <style-rule element='axis'>
+            <encoding attr='space' class='0' field='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353328128:qk]' field-type='quantitative' fold='true' scope='rows' type='space' />
+          </style-rule>
+        </style>
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <style>
+              <style-rule element='pane'>
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='1' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Bar' />
+            <encodings>
+              <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:gender:nk]' />
+              <text column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
+              <style-rule element='pane'>
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
+              </style-rule>
+            </style>
+          </pane>
+          <pane id='2' selection-relaxation-option='selection-relaxation-allow' y-axis-name='[federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353328128:qk]'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Line' />
+            <encodings>
+              <color column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]' />
+              <text column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[sum:Calculation_1382886610353328128:qk]' />
+            </encodings>
+            <style>
+              <style-rule element='mark'>
+                <format attr='mark-labels-show' value='true' />
+                <format attr='mark-labels-cull' value='true' />
+              </style-rule>
+              <style-rule element='pane'>
+                <format attr='minwidth' value='-1' />
+                <format attr='maxwidth' value='-1' />
+              </style-rule>
+            </style>
+          </pane>
+        </panes>
+        <rows>([federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353483777:qk] + [federated.036z2v01ffh29n0zw235a0pu2xo1].[avg:Calculation_1382886610353328128:qk])</rows>
+        <cols>[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:age:nk]</cols>
+      </table>
+      <simple-id uuid='{002B8421-92F2-451B-8C3E-C8EB12E99259}' />
+    </worksheet>
+    <worksheet name='Sheet 8'>
+      <table>
+        <view>
+          <datasources />
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+      <simple-id uuid='{8E10CC88-C5E3-47EA-93A1-3AD1DBE32B94}' />
+    </worksheet>
   </worksheets>
+  <dashboards>
+    <dashboard name='Story 1' type='storyboard'>
+      <style>
+        <style-rule element='story-point-caption'>
+          <format attr='width' value='236' />
+        </style-rule>
+      </style>
+      <size sizing-mode='automatic' />
+      <zones>
+        <zone h='100000' id='2' type-v2='layout-basic' w='100000' x='0' y='0'>
+          <zone h='97750' id='1' param='vert' removable='false' type-v2='layout-flow' w='98932' x='534' y='1125'>
+            <zone h='5907' id='3' type-v2='title' w='98932' x='534' y='1125' />
+            <zone fixed-size='105' h='14768' id='4' is-fixed='true' paired-zone-id='5' removable='false' type-v2='flipboard-nav' w='98932' x='534' y='7032' />
+            <zone h='77075' id='5' paired-zone-id='4' removable='false' type-v2='flipboard' w='98932' x='534' y='21800'>
+              <flipboard active-id='5' nav-type='caption' show-nav-arrows='true'>
+                <story-points>
+                  <story-point caption='Campaigns by clicks segmented by age.' captured-sheet='Engagement (Age)' id='1'>
+                    <capturedDeltas>
+                      <worksheet name='Engagement (Age)'>
+                        <filter class='categorical' column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[Inclusions (Age,Xyz Campaign Id)]'>
+                          <groupfilter function='crossjoin' user:ui-enumeration='all' user:ui-marker='enumerate'>
+                            <groupfilter function='level-members' level='[none:age:nk]' />
+                            <groupfilter function='level-members' level='[none:xyz_campaign_id:ok]' />
+                          </groupfilter>
+                        </filter>
+                        <filter class='categorical' column='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:xyz_campaign_id:ok]'>
+                          <groupfilter function='level-members' level='[none:xyz_campaign_id:ok]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+                        </filter>
+                      </worksheet>
+                    </capturedDeltas>
+                  </story-point>
+                  <story-point caption='Gender Engagement' captured-sheet='Engagement (Gender)' id='2' />
+                  <story-point caption='Segment Engagement' captured-sheet='Engagement (Segment)' id='5' />
+                </story-points>
+              </flipboard>
+            </zone>
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
+        <zone flipboard-zone-id='5' forceUpdate='true' h='17581' hidden='true' id='6' story-point-id='1' type-v2='text' w='32532' x='29125' y='37693'>
+          <formatted-text>
+            <run fontalignment='0' fontcolor='#000000' fontname='Benton Sans Book'>Range </run>
+            <run bold='true' fontalignment='0' fontcolor='#000000' fontname='Benton Sans Book'>(45-49)</run>
+            <run fontalignment='0' fontcolor='#000000' fontname='Benton Sans Book'> engages more in campaigns</run>
+            <run bold='true' fontalignment='0' fontcolor='#000000' fontname='Benton Sans Book'>  (1178, 936),</run>
+            <run fontalignment='0' fontcolor='#000000' fontname='Benton Sans Book'> and the </run>
+            <run bold='true' fontalignment='0' fontcolor='#000000' fontname='Benton Sans Book'>(30-40)</run>
+            <run fontalignment='0' fontcolor='#000000' fontname='Benton Sans Book'> range appears to be more involved in the </run>
+            <run bold='true' fontalignment='0' fontcolor='#000000' fontname='Benton Sans Book'>916</run>
+            <run fontalignment='0' fontcolor='#000000' fontname='Benton Sans Book'> campaign.</run>
+          </formatted-text>
+        </zone>
+        <zone flipboard-zone-id='5' h='13361' id='7' story-point-id='5' type-v2='text' w='29259' x='8951' y='34599'>
+          <formatted-text>
+            <run>Females engage more than males, but they have the lowest conversion.</run>
+          </formatted-text>
+        </zone>
+        <zone flipboard-zone-id='5' h='11814' hidden='true' id='8' story-point-id='2' type-v2='text' w='24983' x='30795' y='34880'>
+          <formatted-text>
+            <run>Females engage more than males.</run>
+          </formatted-text>
+        </zone>
+      </zones>
+      <simple-id uuid='{FBF259C2-DB46-4D23-A9B0-46A45C0E7091}' />
+    </dashboard>
+  </dashboards>
   <windows source-height='37'>
-    <window class='worksheet' name='Campaign Spend($) (2)'>
+    <window class='worksheet' name='Engagement (Gender)'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -6250,13 +7047,13 @@
         </edge>
         <edge name='right'>
           <strip size='140'>
-            <card pane-specification-id='0' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:gender:nk]' type='color' />
+            <card pane-specification-id='2' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:gender:nk]' type='color' />
           </strip>
         </edge>
       </cards>
       <simple-id uuid='{0EC064B2-C192-46A4-9A39-7A167878F2C0}' />
     </window>
-    <window class='worksheet' name='Campaign Spend($)'>
+    <window class='worksheet' name='Engagement (Age)'>
       <cards>
         <edge name='left'>
           <strip size='160'>
@@ -6278,11 +7075,43 @@
         </edge>
         <edge name='right'>
           <strip size='140'>
-            <card pane-specification-id='0' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:age:nk]' type='color' />
+            <card pane-specification-id='2' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:age:nk]' type='color' />
           </strip>
         </edge>
       </cards>
       <simple-id uuid='{F9A343A3-A8C5-47C8-ACE7-8FE5C0B6F7CD}' />
+    </window>
+    <window class='worksheet' name='Engagement (Segment)'>
+      <cards>
+        <edge name='left'>
+          <strip size='178'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+            <card type='measures' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='0' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:age:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='fit-width' />
+      </viewpoint>
+      <simple-id uuid='{6BA35F49-2600-47A0-B382-5CB3D25AF63F}' />
     </window>
     <window class='worksheet' name='Ad Spend($)'>
       <cards>
@@ -6337,11 +7166,106 @@
         </edge>
         <edge name='right'>
           <strip size='160'>
-            <card pane-specification-id='1' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]' type='color' />
+            <card pane-specification-id='2' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]' type='color' />
+            <card pane-specification-id='1' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:gender:nk]' type='color' />
           </strip>
         </edge>
       </cards>
+      <viewpoint>
+        <zoom type='fit-width' />
+      </viewpoint>
       <simple-id uuid='{76112FD6-CCF8-4E8F-884F-593EAFE9F2D5}' />
+    </window>
+    <window class='worksheet' name='Segment CTR/CPA'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='1' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[none:gender:nk]' type='color' />
+            <card pane-specification-id='2' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[:Measure Names]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <zoom type='fit-width' />
+      </viewpoint>
+      <simple-id uuid='{423DECCC-88DC-41FA-AE58-11047962C6C3}' />
+    </window>
+    <window class='worksheet' name='Interests CPA'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='160'>
+            <card pane-specification-id='2' param='[federated.036z2v01ffh29n0zw235a0pu2xo1].[attr:interest:ok]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <viewpoint>
+        <floating-toolbar-visibility value='2' />
+      </viewpoint>
+      <simple-id uuid='{FC5AF15A-C501-40A9-A515-2EB4C1D39C29}' />
+    </window>
+    <window class='worksheet' name='Sheet 8'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{D41EE046-9B13-41CF-BD49-E5002F54B5FC}' />
+    </window>
+    <window class='dashboard' name='Story 1'>
+      <viewpoints />
+      <active id='4' />
+      <simple-id uuid='{4790630A-F380-435C-B8B8-3ACF6B5C2383}' />
     </window>
   </windows>
 </workbook>
