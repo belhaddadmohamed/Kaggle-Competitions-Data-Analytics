@@ -4,6 +4,7 @@ import os
 
 def download_images(query, num_images):
     url = f"https://www.alibaba.com/product-detail/baratas-one-piece-licuadora-para-batidos_1600902727904.html?spm=a2700.details.you_may_like.4.3b03c8364ANeap"
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"}
     response = requests.get(url, headers=headers)
@@ -22,4 +23,4 @@ def download_images(query, num_images):
             print(f"Downloaded {query}_{i + 1}.jpg")
 
 if __name__ == "__main__":
-    download_images('blender', 5)
+    download_images('born', 30)
